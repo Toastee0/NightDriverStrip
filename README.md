@@ -13,6 +13,9 @@ _Davepl, 9/19/2021_
 
 ## What NightDriverStrip is
 
+This is a WIP attempt to port NightDriverLED to the rp2040 platform.
+
+
 NightDriverStrip is a source code package for building a flash program that you upload to the [ESP32 microcontroller](https://en.wikipedia.org/wiki/ESP32).  It can drive up to 8 channels of WS2812B style LEDs connected to the chip pins and display fancy colors and patterns and designs on them.  There are numerous effects built in that can be configured to be shown on the LED strip, including audio/music/beat-reactive effects for modules equipped with a microphone.  It can also optionally receive color data for the LEDs in a simple LZ-compressed (or noncompressed) format over a TCP/IP socket that is opened by default on port 49152.  The ESP32 keeps its clock in sync using NTP.
 
 To add new effects, you derive from `LEDStripEffect` (or an existing effect class) and the good stuff happens in the only important function, `Draw()`.  Add your class to the `AllEffects` table in `effects.cpp` (under your build configuration section, like `DEMO`).  Check out what the built in effects do, but in short you're basically drawing into an array of CRGB objects that each represent a 24-bit color triplet.  Once you're done, the CRGB array is sent to the LEDs and you are asked for the next frame immediately.  Your draw method should take somewhere around 30ms, ideally, and should `delay()` to sleep for the balance if it's quicker. You **can** draw repeatedly basically in a busy loop, but its not needed.
